@@ -42,6 +42,8 @@ namespace sre{
      */
 class DllExport Texture : public std::enable_shared_from_this<Texture> {
 public:
+    static int invert_image(int width, int height, void *image_pixels);
+
     enum class CubemapSide{
         PositiveX,
         NegativeX,

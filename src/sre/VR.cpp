@@ -179,7 +179,7 @@ namespace sre
 		}
 	}
 
-	std::shared_ptr<VR> VR::create(VRType vrType) {
+	std::shared_ptr<VR> VR::create(VRType vrType, float scale) {
 		auto res = std::shared_ptr<VR>(new VR(vrType));
 
 		if (vrType == VRType::OpenVR){
@@ -208,11 +208,14 @@ namespace sre
 			memset(res->m_rDevClassChar, 0, sizeof(res->m_rDevClassChar));
 
 			res->vrSystem->GetRecommendedRenderTargetSize(&res->targetSizeW, &res->targetSizeH);
+
+			res->targetSizeW *= scale;
+			res->targetSizeH *= scale;
+			
 			res->leftTex = Texture::create().withRGBData(nullptr, res->targetSizeW, res->targetSizeH).withGenerateMipmaps( false).withFilterSampling(false).build();
-
 			res->leftFB = Framebuffer::create().withTexture(res->leftTex).build();
+			
 			res->rightTex = Texture::create().withRGBData(nullptr, res->targetSizeW, res->targetSizeH).withGenerateMipmaps(false).withFilterSampling(false).build();
-
 			res->rightFB = Framebuffer::create().withTexture(res->rightTex).build();
 
 			res->setupCameras();

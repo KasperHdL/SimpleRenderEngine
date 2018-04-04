@@ -705,4 +705,34 @@ namespace sre {
         return depthPrecision;
     }
 
+
+    int Texture::invert_image(int width, int height, void *image_pixels) {
+        auto temp_row = std::unique_ptr<char>(new char[width]);
+        if (temp_row.get() == nullptr) {
+            LOG_ERROR("Not enough memory for image inversion");
+            return -1;
+        }
+        //if height is odd, don't need to swap middle row
+        int height_div_2 = height / 2;
+        for (int index = 0; index < height_div_2; index++) {
+            //uses string.h
+            memcpy((Uint8 *)temp_row.get(),
+                   (Uint8 *)(image_pixels)+
+                   width * index,
+                   width);
+
+            memcpy(
+                    (Uint8 *)(image_pixels)+
+                    width * index,
+                    (Uint8 *)(image_pixels)+
+                    width * (height - index - 1),
+                    width);
+            memcpy(
+                    (Uint8 *)(image_pixels)+
+                    width * (height - index - 1),
+                    temp_row.get(),
+                    width);
+        }
+        return 0;
+    }
 }

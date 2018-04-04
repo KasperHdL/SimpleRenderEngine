@@ -1,7 +1,8 @@
+#pragma once
 /*
  *  SimpleRenderEngine (https://github.com/mortennobel/SimpleRenderEngine)
  *
- *  Created by Morten Nobel-Jørgensen ( http://www.nobel-joergensen.com/ )
+ *  Created by Morten Nobel-J�rgensen ( http://www.nobel-joergensen.com/ )
  *  License: MIT
  */
 
@@ -29,7 +30,7 @@ namespace sre {
 	class VR
 	{
 	public:
-		static std::shared_ptr<VR> create(VRType vrType);		// Initiate VR integration. If unsuccessful
+		static std::shared_ptr<VR> create(VRType vrType, float scale);		// Initiate VR integration. If unsuccessful
 		void render();											// Update HMD cameras (position and rotation)
 															 	// and invoke renderVR to render frame
 		std::function<void(std::shared_ptr<sre::Framebuffer> fb, sre::Camera cam, bool leftEye)> renderVR;
@@ -45,13 +46,13 @@ namespace sre {
 
 		void setNearFarPlanes(float nearPlane, float farPlane);
 		void debugGUI();
-	private:
+		void updateHMDMatrixPose();
 		VRType vrType;
 		VR(VRType vrType);
-		void updateHMDMatrixPose();
+		
 		glm::mat4 baseViewTransform = glm::mat4(1);
 		float nearPlane = 0.1;
-		float farPlane = 100;
+		float farPlane = 1000;
 
 		Camera left;
 		Camera right;
@@ -62,7 +63,6 @@ namespace sre {
 		uint32_t targetSizeW;
 		uint32_t targetSizeH;
 		void setupCameras();
-#ifdef SRE_OPENVR
 		glm::mat4 mat4eyePosLeft;
 		glm::mat4 mat4eyePosRight;
 		glm::mat4 getHMDMatrixPoseEye(vr::Hmd_Eye nEye);
@@ -76,6 +76,5 @@ namespace sre {
 		glm::mat4 m_mat4HMDPose;
 		std::string m_strPoseClasses;                            // what classes we saw poses for this frame
 		char m_rDevClassChar[vr::k_unMaxTrackedDeviceCount];   // for each device, a character representing its class
-#endif
 	};
 }

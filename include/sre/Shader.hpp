@@ -219,6 +219,8 @@ namespace sre {
                                                               // Uniforms
                                                               //   "tex" shared_ptr<Texture> (default white texture)
 
+        static std::shared_ptr<Shader> getOutline();
+
         static ShaderBuilder create();
         ShaderBuilder update();                                // Update the shader using the builder pattern. (Must end with build()).
 

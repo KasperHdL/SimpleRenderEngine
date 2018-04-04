@@ -1,7 +1,7 @@
 /*
  *  SimpleRenderEngine (https://github.com/mortennobel/SimpleRenderEngine)
  *
- *  Created by Morten Nobel-Jørgensen ( http://www.nobel-joergensen.com/ )
+ *  Created by Morten Nobel-Jørgensen ( http://www.nobel-joergnesen.com/ )
  *  License: MIT
  */
 
@@ -16,6 +16,7 @@ namespace sre {
     public:
         Color() = default;
         Color(float r, float g, float b, float a = 1.0f);
+        Color(glm::vec4 c);
 
         float& operator[] (int index);
 
