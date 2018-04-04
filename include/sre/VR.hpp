@@ -30,7 +30,7 @@ namespace sre {
 	class VR
 	{
 	public:
-		static std::shared_ptr<VR> create(VRType vrType, float scale);		// Initiate VR integration. If unsuccessful
+		static std::shared_ptr<VR> create(VRType vrType, float scale = 1.f);		// Initiate VR integration. If unsuccessful
 		void render();											// Update HMD cameras (position and rotation)
 															 	// and invoke renderVR to render frame
 		std::function<void(std::shared_ptr<sre::Framebuffer> fb, sre::Camera cam, bool leftEye)> renderVR;
