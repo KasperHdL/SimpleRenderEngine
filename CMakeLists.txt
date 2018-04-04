@@ -5,10 +5,30 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 
-find_package(SDL2 REQUIRED)
-include_directories(${SDL2_INCLUDE_DIR})
-include_directories(sre)
-include_directories(include)
+#########################################################
+# Variables
+#########################################################
+ 
+if(ARCH STREQUAL "x86")
+    SET(PLATFORM_ARCH "x86")
+else()
+    SET(PLATFORM_ARCH "x64")
+endif()
+ 
+ 
+IF(WIN32)
+    SET(PLATFORM_PATHS ${CMAKE_SOURCE_DIR}/libraries/windows)
+    SET(LIBRARY_EXTENSION "lib")
+ELSEIF(APPLE)
+    SET(PLATFORM_PATHS ${CMAKE_SOURCE_DIR}/libraries/macos)
+    SET(LIBRARY_EXTENSION "dylib")
+ELSEIF(UNIX)
+    SET(PLATFORM_PATHS ${CMAKE_SOURCE_DIR}/libraries/linux)
+    SET(LIBRARY_EXTENSION "so")
+ENDIF()
+ 
+SET(CROSS_PLATFORM_PATHS ${CMAKE_SOURCE_DIR}/libraries/multi)
+
 
 #########################################################
 # FIND OPENGL
@@ -30,30 +50,24 @@ ELSE (APPLE)
     SET(EXTRA_LIBS ${OPENGL_LIBRARY} ${GLEW_LIBRARY})
 ENDIF (APPLE)
 
-find_package(SDL2_IMAGE REQUIRED)
-include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
+find_package(SDL2 REQUIRED)
+include_directories(${SDL2_INCLUDE_DIR})
+include_directories(sre)
+include_directories(include)
 
-option(USE_OPENVR "Enable OpenVR" OFF)
+option(USE_OPENVR "Enable OpenVR" ON)
 
 set(OPENVR_LIB)
 IF (USE_OPENVR)
 	find_package(OpenVR REQUIRED)
-	include_directories(${OPENVR_INCLUDE_DIRS})
+	include_directories(${CROSS_PLATFORM_PATHS}/openvr)
 	IF(UNIX)
 		add_definitions(-DSRE_OPENVR)
 	ELSE(UNIX)	
 		add_definitions(/DSRE_OPENVR)
 	ENDIF(UNIX)
-    IF(APPLE)
-        if(${OPENVR_PLATFORM} MATCHES "osx32")
-            set(OPENVR_LIB "${OPENVR_ROOT_DIR}/lib/${OPENVR_PLATFORM}/libopenvr_api.dylib")
-        else()
-            set(OPENVR_LIB "${OPENVR_ROOT_DIR}/lib/${OPENVR_PLATFORM}/OpenVR.framework")
-        endif()
-        MESSAGE("${OPENVR_LIB}")
-    ELSE(APPLE)
-        set(OPENVR_LIB "${OPENVR_ROOT_DIR}/lib/${OPENVR_PLATFORM}/openvr_api.lib")
-    ENDIF(APPLE)
+	
+    set(OPENVR_LIB ${OPENVR_LIBRARY})
 ENDIF(USE_OPENVR)
 
 add_subdirectory(src)
