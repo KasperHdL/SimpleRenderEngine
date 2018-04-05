@@ -70,6 +70,30 @@ IF (USE_OPENVR)
     set(OPENVR_LIB ${OPENVR_LIBRARY})
 ENDIF(USE_OPENVR)
 
+
+set(DLLFileList)
+IF (WIN32)
+    SET(SDL2_DLL_FOLDER "${PLATFORM_PATHS}/SDL2/lib/${PLATFORM_ARCH}")
+
+    #set visual studio to MT
+   foreach(flag_var
+        CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
+        CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+      if(${flag_var} MATCHES "/MD")
+        string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
+      endif(${flag_var} MATCHES "/MD")
+    endforeach(flag_var)
+
+ 
+    file(GLOB DLLFileList
+        "${SDL2_DLL_FOLDER}/*.dll"
+    )
+ 
+    set(DLLFileList ${DLLFileList} "${PLATFORM_PATHS}/openvr/${PLATFORM_ARCH}/openvr_api.dll")
+ 
+ENDIF(WIN32)
+
+
 add_subdirectory(src)
 add_subdirectory(examples)
 add_subdirectory(test)
