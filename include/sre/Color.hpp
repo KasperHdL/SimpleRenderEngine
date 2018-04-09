@@ -17,6 +17,7 @@ namespace sre {
         Color() = default;
         Color(float r, float g, float b, float a = 1.0f);
         Color(glm::vec4 c);
+        Color(glm::vec3 c);
 
         float& operator[] (int index);
 

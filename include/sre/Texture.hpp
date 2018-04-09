@@ -117,7 +117,9 @@ public:
         bool dumpDebug = false;
         SamplerColorspace samplerColorspace = SamplerColorspace::Linear;
         uint32_t target = 0;
+    public:
         unsigned int textureId = 0;
+    private:
 
         std::map<uint32_t, TextureDefinition> textureTypeData;
 

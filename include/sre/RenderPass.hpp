@@ -73,7 +73,7 @@ namespace sre {
             int clearStencilValue = 0;
             std::shared_ptr<Skybox> skybox;
 
-            bool gui = true;
+            bool gui = false;
 
             explicit RenderPassBuilder(RenderStats* renderStats);
             friend class RenderPass;

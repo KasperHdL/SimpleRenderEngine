@@ -16,6 +16,9 @@ namespace sre {
     Color::Color(glm::vec4 c)
     :r(c.r), g(c.g), b(c.b), a(c.a)
     {}
+    Color::Color(glm::vec3 c)
+    :r(c.r), g(c.g), b(c.b), a(1)
+    {}
 
     float& Color::operator[] (int index){
         switch (index){

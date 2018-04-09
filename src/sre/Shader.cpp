@@ -30,6 +30,7 @@ namespace sre {
         std::shared_ptr<Shader> blit;
         std::shared_ptr<Shader> unlitSprite;
         std::shared_ptr<Shader> standardParticles;
+        std::shared_ptr<Shader> outline;
 
         long globalShaderCounter = 1;
 
@@ -723,6 +724,18 @@ namespace sre {
                 .withName("Standard")
                 .build();
         return standardPBR;
+    }
+
+    std::shared_ptr<Shader> Shader::getOutline(){
+        if (outline != nullptr){
+            return outline;
+        }
+        outline = create()
+                .withSourceFile("outline_vert.glsl", ShaderType::Vertex)
+                .withSourceFile("outline_frag.glsl", ShaderType::Fragment)
+                .withName("Outline")
+                .build();
+        return outline;
     }
 
     Uniform Shader::getUniform(const std::string &name) {
