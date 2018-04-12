@@ -16,5 +16,5 @@ void main(void)
 #ifdef S_VERTEX_COLOR
     fragColor = fragColor * vColor;
 #endif
-    fragColor = toOutput(fragColor);
+    //fragColor = toOutput(fragColor);
 }

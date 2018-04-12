@@ -54,7 +54,7 @@ vec3 computeLightBlinnPhong(vec3 wsPos, vec3 wsCameraPos, vec3 normal, out vec3 
             float nDotHV = dot(normal, H);
             if (nDotHV > 0.0){
                 float pf = pow(nDotHV, specularity.a);
-                specularityOut += specularity.rgb * pf * att; // white specular highlights
+                specularityOut += specularity.rgb * pf * att * diffuse; // white specular highlights
             }
         }
     }
