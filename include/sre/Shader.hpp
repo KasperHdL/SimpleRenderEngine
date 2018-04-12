@@ -225,6 +225,8 @@ namespace sre {
                                                                 // S_VERTEX_COLOR
                                                                 //   Adds VertexAttribute "color" vec4 defined in linear space.
 
+        static std::shared_ptr<Shader> getStandardBlinn();
+
         static std::shared_ptr<Shader> getStandardPhong();      // Similar to Blinn-Phong, but with more accurate specular highlights
 
         static std::shared_ptr<Shader> getUnlit();             // Unlit model.

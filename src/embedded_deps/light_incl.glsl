@@ -63,6 +63,29 @@ vec3 computeLightBlinnPhong(vec3 wsPos, vec3 wsCameraPos, vec3 normal, out vec3 
     return lightColor;
 }
 
+vec3 computeLightBlinn(vec3 wsPos, vec3 wsCameraPos, vec3 normal){
+    vec3 lightColor = vec3(0.0,0.0,0.0);
+    for (int i=0;i<SI_LIGHTS;i++){
+        vec3 lightDirection = vec3(0.0,0.0,0.0);
+        float att = 0.0;
+        lightDirectionAndAttenuation(g_lightPosType[i], g_lightColorRange[i].w, wsPos, lightDirection, att);
+
+        if (att <= 0.0){
+            continue;
+        }
+
+        // diffuse light
+        float diffuse = dot(lightDirection, normal);
+        if (diffuse > 0.0){
+            lightColor += (att * diffuse) * g_lightColorRange[i].xyz;
+        }
+    }
+    
+    lightColor = max(g_ambientLight.xyz, lightColor);
+
+    return lightColor;
+}
+
 vec3 computeLightPhong(vec3 wsPos, vec3 wsCameraPos, vec3 normal, out vec3 specularityOut){
     specularityOut = vec3(0.0, 0.0, 0.0);
     vec3 lightColor = vec3(0.0,0.0,0.0);

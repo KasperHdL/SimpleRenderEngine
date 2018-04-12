@@ -25,6 +25,7 @@ namespace sre {
         std::shared_ptr<Shader> standardPBR;
         std::shared_ptr<Shader> standardBlinnPhong;
         std::shared_ptr<Shader> standardPhong;
+        std::shared_ptr<Shader> standardBlinn;
         std::shared_ptr<Shader> unlit;
         std::shared_ptr<Shader> skybox;
         std::shared_ptr<Shader> blit;
@@ -1031,6 +1032,18 @@ namespace sre {
                 .withName("StandardPhong")
                 .build();
         return standardPhong;
+    }
+
+    std::shared_ptr<Shader> Shader::getStandardBlinn() {
+    if (standardBlinn != nullptr){
+        return standardBlinn;
+    }
+    standardBlinn = create()
+            .withSourceFile("standard_blinn_vert.glsl", ShaderType::Vertex)
+            .withSourceFile("standard_blinn_frag.glsl", ShaderType::Fragment)
+            .withName("StandardBlinn")
+            .build();
+    return standardBlinn;
     }
 
 

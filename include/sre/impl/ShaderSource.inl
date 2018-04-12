@@ -105,6 +105,7 @@ void main(void) {
     vUV = uv;
 })"),
 std::make_pair<std::string,std::string>("light_incl.glsl",R"(
+
 in vec4 vLightDir[SI_LIGHTS];
 
 uniform vec4 specularity;
@@ -160,10 +161,33 @@ vec3 computeLightBlinnPhong(vec3 wsPos, vec3 wsCameraPos, vec3 normal, out vec3 
             float nDotHV = dot(normal, H);
             if (nDotHV > 0.0){
                 float pf = pow(nDotHV, specularity.a);
-                specularityOut += specularity.rgb * pf * att; // white specular highlights
+                specularityOut += specularity.rgb * pf * att * diffuse; // white specular highlights
             }
         }
     }
+    lightColor = max(g_ambientLight.xyz, lightColor);
+
+    return lightColor;
+}
+
+vec3 computeLightBlinn(vec3 wsPos, vec3 wsCameraPos, vec3 normal){
+    vec3 lightColor = vec3(0.0,0.0,0.0);
+    for (int i=0;i<SI_LIGHTS;i++){
+        vec3 lightDirection = vec3(0.0,0.0,0.0);
+        float att = 0.0;
+        lightDirectionAndAttenuation(g_lightPosType[i], g_lightColorRange[i].w, wsPos, lightDirection, att);
+
+        if (att <= 0.0){
+            continue;
+        }
+
+        // diffuse light
+        float diffuse = dot(lightDirection, normal);
+        if (diffuse > 0.0){
+            lightColor += (att * diffuse) * g_lightColorRange[i].xyz;
+        }
+    }
+    
     lightColor = max(g_ambientLight.xyz, lightColor);
 
     return lightColor;
@@ -854,4 +878,77 @@ uniform mat4 g_model;
 uniform mat3 g_model_it;
 uniform mat3 g_model_view_it;
 #endif)"),
+
+std::make_pair<std::string,std::string>("standard_blinn_frag.glsl",R"(#version 330
+out vec4 fragColor;
+#if defined(S_TANGENTS) && defined(S_NORMALMAP)
+in mat3 vTBN;
+#else
+in vec3 vNormal;
+#endif
+in vec2 vUV;
+in vec3 vWsPos;
+#ifdef S_NORMALMAP
+uniform sampler2D normalTex;
+uniform float normalScale;
+#endif
+#ifdef S_VERTEX_COLOR
+in vec4 vColor;
+#endif
+
+uniform vec4 color;
+uniform sampler2D tex;
+
+#pragma include "global_uniforms_incl.glsl"
+#pragma include "light_incl.glsl"
+#pragma include "normalmap_incl.glsl"
+#pragma include "sre_utils_incl.glsl"
+
+void main()
+{
+    vec4 c = color * toLinear(texture(tex, vUV));
+#ifdef S_VERTEX_COLOR
+    c = c * vColor;
+#endif
+    vec3 normal = getNormal();
+    vec3 l = computeLightBlinn(vWsPos, g_cameraPos.xyz, normal);
+
+    fragColor = c * vec4(l, 1.0);
+    fragColor = toOutput(fragColor);
+})"),
+std::make_pair<std::string,std::string>("standard_blinn_vert.glsl",R"(#version 330
+in vec3 position;
+in vec3 normal;
+in vec4 uv;
+out vec2 vUV;
+#if defined(S_TANGENTS) && defined(S_NORMALMAP)
+in vec4 tangent;
+out mat3 vTBN;
+#else
+out vec3 vNormal;
+#endif
+out vec3 vWsPos;
+#ifdef S_VERTEX_COLOR
+in vec4 vertex_color;
+out vec4 vColor;
+#endif
+
+#pragma include "global_uniforms_incl.glsl"
+#pragma include "normalmap_incl.glsl"
+
+void main(void) {
+    vec4 wsPos = g_model * vec4(position,1.0);
+    gl_Position = g_projection * g_view * wsPos;
+#if defined(S_TANGENTS) && defined(S_NORMALMAP)
+    vTBN = computeTBN(g_model_it, normal, tangent);
+#else
+    vNormal = normalize(g_model_it * normal);
+#endif
+    vUV = uv.xy;
+    vWsPos = wsPos.xyz;
+
+#ifdef S_VERTEX_COLOR
+    vColor = vertex_color;
+#endif
+})"),
 };
