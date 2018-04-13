@@ -17,7 +17,7 @@ uniform samplerCube tex;
 void main(void)
 {
     fragColor = color * toLinear(texture(tex, vUV));
-    fragColor = toOutput(fragColor);
+    //fragColor = toOutput(fragColor);
 })"),
 std::make_pair<std::string,std::string>("skybox_vert.glsl",R"(#version 330
 in vec3 position;
@@ -743,7 +743,7 @@ void main(void)
 #ifdef S_VERTEX_COLOR
     fragColor = fragColor * vColor;
 #endif
-    fragColor = toOutput(fragColor);
+    //fragColor = toOutput(fragColor);
 })"),
 std::make_pair<std::string,std::string>("unlit_vert.glsl",R"(#version 330
 in vec3 position;
@@ -914,7 +914,7 @@ void main()
     vec3 l = computeLightBlinn(vWsPos, g_cameraPos.xyz, normal);
 
     fragColor = c * vec4(l, 1.0);
-    fragColor = toOutput(fragColor);
+    //fragColor = toOutput(fragColor);
 })"),
 std::make_pair<std::string,std::string>("standard_blinn_vert.glsl",R"(#version 330
 in vec3 position;

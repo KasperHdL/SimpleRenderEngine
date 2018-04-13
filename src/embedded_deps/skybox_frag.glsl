@@ -10,5 +10,5 @@ uniform samplerCube tex;
 void main(void)
 {
     fragColor = color * toLinear(texture(tex, vUV));
-    fragColor = toOutput(fragColor);
+    //fragColor = toOutput(fragColor);
 }
