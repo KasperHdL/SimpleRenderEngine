@@ -92,7 +92,7 @@ IF (WIN32)
         "${SDL2_DLL_FOLDER}/*.dll"
     )
  
-    set(DLLFileList ${DLLFileList} "${PLATFORM_PATHS}/openvr/${PLATFORM_ARCH}/openvr_api.dll")
+    set(DLLFileList ${DLLFileList} "${PLATFORM_PATHS}/openvr/x86/openvr_api.dll")
  
 ENDIF(WIN32)
 
