@@ -18,9 +18,9 @@ namespace sre {
     /**
      * Contains information about a Light source
      */
-	class DllExport Light {
+	class  Light {
 	public:
-        class DllExport LightBuilder {
+        class  LightBuilder {
         public:
             ~LightBuilder();
             LightBuilder& withPointLight(glm::vec3 position);               // Using point light with a worldspace position

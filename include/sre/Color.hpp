@@ -8,11 +8,12 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <sre/impl/Export.hpp>
 
 namespace sre {
 
     // The color class represent a sRGBA color, (this means that RGB is in gamma space, whereas alpha is in linear space)
-    class Color {
+    class  Color {
     public:
         Color() = default;
         Color(float r, float g, float b, float a = 1.0f);

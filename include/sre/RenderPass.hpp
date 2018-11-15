@@ -30,9 +30,9 @@ namespace sre {
     // A render pass encapsulates some render states and allows adding draw-calls.
     // Materials and shaders are assumed not to be modified during a renderpass.
     // Note that only one render pass object can be active at a time.
-    class DllExport RenderPass {
+    class RenderPass {
     public:
-        class DllExport RenderPassBuilder {
+        class RenderPassBuilder {
         public:
             RenderPassBuilder& withName(const std::string& name);
             RenderPassBuilder& withCamera(const Camera& camera);
@@ -81,7 +81,7 @@ namespace sre {
             friend class Inspector;
         };
 
-        static RenderPassBuilder create();   // Create a RenderPass
+        static DllExport RenderPassBuilder create();   // Create a RenderPass
 
         RenderPass(RenderPass&& rp) noexcept;
         RenderPass& operator=(RenderPass&& other) noexcept;

@@ -11,6 +11,7 @@
 #include <array>
 #include "glm/glm.hpp"
 #include "sre/impl/CPPShim.hpp"
+#include <sre/impl/Export.hpp>
 
 namespace sre{
 

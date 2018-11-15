@@ -40,9 +40,9 @@ namespace sre {
      *
      * Note that each mesh can have multiple index sets associated with it which allows for using multiple materials for rendering.
      */
-    class DllExport Mesh : public std::enable_shared_from_this<Mesh> {
+    class Mesh : public std::enable_shared_from_this<Mesh> {
     public:
-        class DllExport MeshBuilder {
+        class MeshBuilder {
         public:
             // primitives
             MeshBuilder& withSphere(int stacks = 16, int slices = 32, float radius = 1);        // Creates a sphere mesh including UV coordinates, positions and normals
@@ -87,7 +87,7 @@ namespace sre {
         };
         ~Mesh();
 
-        static MeshBuilder create();                                // Create Mesh using the builder pattern. (Must end with build()).
+        static DllExport MeshBuilder create();                                // Create Mesh using the builder pattern. (Must end with build()).
         MeshBuilder update();                                       // Update the mesh using the builder pattern. (Must end with build()).
 
         int getVertexCount();                                       // Number of vertices in mesh

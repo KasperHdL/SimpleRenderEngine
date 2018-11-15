@@ -64,7 +64,7 @@ namespace sre {
     /// SDL_DestroyWindow(window);
     /// SDL_Quit();
     ///
-    class DllExport Renderer {
+    class Renderer {
     public:
         explicit Renderer(SDL_Window *window, bool vsync = true, int maxSceneLights = 4);    // SimpleRenderEngine constructor
                                                             // param window pointer to the SDL window (must be initialized using OpenGL)
@@ -85,7 +85,7 @@ namespace sre {
         const RenderStats& getRenderStats();                // Return stats of the last rendered frame
                                                             // RenderStats only includes data maintained by sre (imgui calls are not included)
 
-        static Renderer* instance;                          // Singleton reference to the engine after initialization.
+        static DllExport Renderer* instance;                          // Singleton reference to the engine after initialization.
 
         int getMaxSceneLights();                            // Get maximum amout of scenelights per object
 

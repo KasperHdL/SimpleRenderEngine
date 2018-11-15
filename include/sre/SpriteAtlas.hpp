@@ -11,6 +11,7 @@
 #include <string>
 #include <map>
 #include "sre/Sprite.hpp"
+#include <sre/impl/Export.hpp>
 
 //
 // Sprite atlases owns sprite definitions using a single texture.
@@ -49,15 +50,15 @@ namespace sre{
 class SpriteAtlas {
 public:
     ~SpriteAtlas();
-    static std::shared_ptr<SpriteAtlas> create(std::string jsonFile,    // Create sprite atlas based on JSON file
+    static DllExport std::shared_ptr<SpriteAtlas> create(std::string jsonFile,    // Create sprite atlas based on JSON file
                                                std::string imageFile,
                                                bool flipAnchorY = true);
 
-    static std::shared_ptr<SpriteAtlas> create(std::string jsonFile,    // Create sprite atlas based on JSON file and Texture
+    static DllExport std::shared_ptr<SpriteAtlas> create(std::string jsonFile,    // Create sprite atlas based on JSON file and Texture
                                                std::shared_ptr<Texture> texture,
                                                bool flipAnchorY = true);
 
-    static std::shared_ptr<SpriteAtlas> createSingleSprite(std::shared_ptr<Texture> texture, // Create sprite atlas
+    static DllExport std::shared_ptr<SpriteAtlas> createSingleSprite(std::shared_ptr<Texture> texture, // Create sprite atlas
                                                            std::string name = "sprite",      // (with single sprite)
                                                            glm::vec2 pivot = {0.5f,0.5f},    // using texture
                                                            glm::ivec2 pos = {0,0},

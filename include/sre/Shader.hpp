@@ -54,7 +54,7 @@ namespace sre {
 
     const char* c_str(UniformType u);
 
-    struct DllExport Uniform {
+    struct Uniform {
 		std::string name;
         int id;
         UniformType type;
@@ -140,7 +140,7 @@ namespace sre {
      *   avoid during realtime rendering.
      *   Specialization constants must start start with 'S_' and must consist of capital letters, digits and underscore.
      */
-    class DllExport Shader : public std::enable_shared_from_this<Shader> {
+    class Shader : public std::enable_shared_from_this<Shader> {
         enum class ResourceType{
             File,
             Memory
@@ -152,7 +152,7 @@ namespace sre {
         };
     public:
 
-        class DllExport ShaderBuilder {
+        class ShaderBuilder {
         public:
             DEPRECATED("Use ShaderType withSourceString() or withSourceFile() instead")
             ShaderBuilder& withSource(const std::string& vertexShaderGLSL,
@@ -186,9 +186,9 @@ namespace sre {
         };
 
         DEPRECATED("Use getStandardPBR or getStandardBlinnPhong")
-        static std::shared_ptr<Shader> getStandard();
+        static DllExport std::shared_ptr<Shader> getStandard();
 
-        static std::shared_ptr<Shader> getStandardPBR();       // Phong Light Model. Uses light objects and ambient light set in Renderer.
+        static DllExport std::shared_ptr<Shader> getStandardPBR();       // Phong Light Model. Uses light objects and ambient light set in Renderer.
                                                                // Uniforms
                                                                //   "color" vec4 (default (1,1,1,1))
                                                                //   "tex" shared_ptr<Texture> (default white texture)
@@ -212,7 +212,7 @@ namespace sre {
                                                                //   Adds VertexAttribute "color" vec4 defined in linear space.
 
 
-        static std::shared_ptr<Shader> getStandardBlinnPhong(); // Blinn-Phong Light Model. Uses light objects and ambient light set in Renderer.
+        static DllExport std::shared_ptr<Shader> getStandardBlinnPhong(); // Blinn-Phong Light Model. Uses light objects and ambient light set in Renderer.
                                                                 // Uniforms
                                                                 //   "color" vec4 (default (1,1,1,1))
                                                                 //   "tex" shared_ptr<Texture> (default white texture)
@@ -225,11 +225,11 @@ namespace sre {
                                                                 // S_VERTEX_COLOR
                                                                 //   Adds VertexAttribute "color" vec4 defined in linear space.
 
-        static std::shared_ptr<Shader> getStandardBlinn();
+        static DllExport std::shared_ptr<Shader> getStandardBlinn();
 
-        static std::shared_ptr<Shader> getStandardPhong();      // Similar to Blinn-Phong, but with more accurate specular highlights
+        static DllExport std::shared_ptr<Shader> getStandardPhong();      // Similar to Blinn-Phong, but with more accurate specular highlights
 
-        static std::shared_ptr<Shader> getUnlit();             // Unlit model.
+        static DllExport std::shared_ptr<Shader> getUnlit();             // Unlit model.
                                                                // Uniforms
                                                                //   "color" vec4 (default (1,1,1,1))
                                                                //   "tex" shared_ptr<Texture> (default white texture)
@@ -237,14 +237,14 @@ namespace sre {
                                                                // S_VERTEX_COLOR
                                                                //   Adds VertexAttribute "color" vec4 defined in linear space.
 
-        static std::shared_ptr<Shader> getSkybox();
+        static DllExport std::shared_ptr<Shader> getSkybox();
 
-        static std::shared_ptr<Shader> getUnlitSprite();       // UnlitSprite = no depth examples and alpha blending
+        static DllExport std::shared_ptr<Shader> getUnlitSprite();       // UnlitSprite = no depth examples and alpha blending
                                                                // Uniforms
                                                                //   "color" vec4 (default (1,1,1,1))
                                                                //   "tex" shared_ptr<Texture> (default white texture)
 
-        static std::shared_ptr<Shader> getStandardParticles(); // StandardParticles
+        static DllExport std::shared_ptr<Shader> getStandardParticles(); // StandardParticles
                                                                // Uniforms
                                                                //   "tex" shared_ptr<Texture> (default alpha sphere texture)
                                                                // VertexAttributes
@@ -253,13 +253,13 @@ namespace sre {
                                                                //   "uv" vec4 (note: xy is lower left corner, z is size and w is rotation in radians)
                                                                // Expects a mesh with topology = Points
 
-        static std::shared_ptr<Shader> getBlit();             // Shader used for blitting
+        static DllExport std::shared_ptr<Shader> getBlit();             // Shader used for blitting
                                                               // Uniforms
                                                               //   "tex" shared_ptr<Texture> (default white texture)
 
-        static std::shared_ptr<Shader> getOutline();
+        static DllExport std::shared_ptr<Shader> getOutline();
 
-        static ShaderBuilder create();
+        static DllExport ShaderBuilder create();
         ShaderBuilder update();                                // Update the shader using the builder pattern. (Must end with build()).
 
         ~Shader();
@@ -354,6 +354,6 @@ namespace sre {
         int uniformLocationCameraPosition;
 
     public:
-        static std::string translateToGLSLES(std::string source, bool vertexShader, int version = 100);
+        static DllExport std::string translateToGLSLES(std::string source, bool vertexShader, int version = 100);
     };
 }

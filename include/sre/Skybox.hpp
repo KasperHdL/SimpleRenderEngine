@@ -13,7 +13,7 @@
 namespace sre {
     class Skybox {
     public:
-        static std::shared_ptr<Skybox> create();
+        static DllExport std::shared_ptr<Skybox> create();
 
         std::shared_ptr<Material> getMaterial();
         void setMaterial(std::shared_ptr<Material> material);

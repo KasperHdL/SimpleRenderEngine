@@ -40,9 +40,9 @@ namespace sre{
      * - wrap texture coordinates: if enabled the texture is repeated when sampling out the 0.0 .. 1.0 values
      * - filter sampling: if enabled the texture sampling will use interpolation to find the colors between pixel centers
      */
-class DllExport Texture : public std::enable_shared_from_this<Texture> {
+class Texture : public std::enable_shared_from_this<Texture> {
 public:
-    static int invert_image(int width, int height, void *image_pixels);
+    static DllExport int invert_image(int width, int height, void *image_pixels);
 
     enum class CubemapSide{
         PositiveX,
@@ -75,7 +75,7 @@ public:
         Mirror
     };
 
-    class DllExport TextureBuilder {
+    class TextureBuilder {
     public:
         ~TextureBuilder();
         TextureBuilder& withGenerateMipmaps(bool enable);
@@ -130,11 +130,11 @@ public:
     virtual ~Texture();
 
     // Create a new texture using the builder pattern
-    static TextureBuilder create();
+    static DllExport TextureBuilder create();
 
-    static std::shared_ptr<Texture> getWhiteTexture();
-    static std::shared_ptr<Texture> getSphereTexture();
-    static std::shared_ptr<Texture> getDefaultCubemapTexture();
+    static DllExport std::shared_ptr<Texture> getWhiteTexture();
+    static DllExport std::shared_ptr<Texture> getSphereTexture();
+    static DllExport std::shared_ptr<Texture> getDefaultCubemapTexture();
 
     int getWidth();
     int getHeight();
@@ -152,12 +152,13 @@ public:
     int getDataSize();                                                                      // get size of the texture in bytes on GPU
     bool isDepthTexture();
     DepthPrecision getDepthPrecision();
+    unsigned int textureId;
 private:
     Texture(unsigned int textureId, int width, int height, uint32_t target, std::string string);
     void updateTextureSampler(bool filterSampling, Wrap wrapTextureCoordinates);
     void invokeGenerateMipmap();
-    static GLenum getFormat(SDL_Surface *image);
-    static std::vector<char> loadFileFromMemory(const char* data, int dataSize, GLenum& format, bool & alpha,int& width, int& height, int& bytesPerPixel, bool invertY = true);
+    static DllExport GLenum getFormat(SDL_Surface *image);
+    static DllExport std::vector<char> loadFileFromMemory(const char* data, int dataSize, GLenum& format, bool & alpha,int& width, int& height, int& bytesPerPixel, bool invertY = true);
     int width;
     int height;
     uint32_t target;
@@ -168,7 +169,6 @@ private:
     SamplerColorspace samplerColorspace;
     bool filterSampling = true; // true = linear/trilinear sampling, false = point sampling
     Wrap wrapUV;
-    unsigned int textureId;
     friend class Shader;
     friend class Material;
     friend class Framebuffer;

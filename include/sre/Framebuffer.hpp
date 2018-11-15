@@ -12,6 +12,7 @@
 #include "glm/glm.hpp"
 #include "Texture.hpp"
 #include "impl/CPPShim.hpp"
+#include <sre/impl/Export.hpp>
 
 
 namespace sre {
@@ -31,12 +32,12 @@ namespace sre {
         class FrameBufferBuilder {
         public:
             DEPRECATED("Use withColorTexture() instead")
-            FrameBufferBuilder& withTexture(std::shared_ptr<Texture> texture);
+             FrameBufferBuilder& withTexture(std::shared_ptr<Texture> texture);
 
-            FrameBufferBuilder& withColorTexture(std::shared_ptr<Texture> texture);
-            FrameBufferBuilder& withDepthTexture(std::shared_ptr<Texture> texture);
-            FrameBufferBuilder& withName(std::string name);
-            std::shared_ptr<Framebuffer> build();
+             FrameBufferBuilder& withColorTexture(std::shared_ptr<Texture> texture);
+             FrameBufferBuilder& withDepthTexture(std::shared_ptr<Texture> texture);
+             FrameBufferBuilder& withName(std::string name);
+             std::shared_ptr<Framebuffer> build();
         private:
             std::vector<std::shared_ptr<Texture>> textures;
             std::shared_ptr<Texture> depthTexture;
@@ -47,19 +48,19 @@ namespace sre {
             friend class Framebuffer;
         };
 
-        ~Framebuffer();
+         ~Framebuffer();
 
-        static FrameBufferBuilder create();
+         static DllExport FrameBufferBuilder create();
 
-        static int getMaximumDepthAttachments();
-        static int getMaximumColorAttachments();
+         static DllExport int getMaximumDepthAttachments();
+         static DllExport int getMaximumColorAttachments();
 
         DEPRECATED("Use setColorTexture() instead")
-        void setTexture(std::shared_ptr<Texture> tex, int index = 0);
-        void setColorTexture(std::shared_ptr<Texture> tex, int index = 0);
-        void setDepthTexture(std::shared_ptr<Texture> tex);
+         void setTexture(std::shared_ptr<Texture> tex, int index = 0);
+         void setColorTexture(std::shared_ptr<Texture> tex, int index = 0);
+         void setDepthTexture(std::shared_ptr<Texture> tex);
 
-        const std::string& getName();
+         const std::string& getName();
     private:
         void bind();
         bool dirty = true;

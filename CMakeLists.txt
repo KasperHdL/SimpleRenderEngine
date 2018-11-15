@@ -5,9 +5,23 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 set(CMAKE_BUILD_TYPE Debug)
-	
+    
+
+
+#########################################################
+# Local Config
+#########################################################
+include("${CMAKE_SOURCE_DIR}/cmake/local_config.cmake" OPTIONAL RESULT_VARIABLE LOCAL_CONFIG_RESULT_VAR)
+if(LOCAL_CONFIG_RESULT_VAR STREQUAL NOTFOUND)
+
+    file(COPY "${CMAKE_SOURCE_DIR}/cmake/templates/local_config_template.cmake" DESTINATION "${CMAKE_SOURCE_DIR}")
+    file(RENAME "${CMAKE_SOURCE_DIR}/local_config_template.cmake" "${CMAKE_SOURCE_DIR}/cmake/local_config.cmake")
+    include("${CMAKE_SOURCE_DIR}/cmake/local_config.cmake")
+endif()
+
 #########################################################
 # Variables
 #########################################################
@@ -18,13 +32,12 @@ else()
     SET(PLATFORM_ARCH "x64")
 endif()
  
- 
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+#set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 IF(WIN32)
     SET(PLATFORM_PATHS ${CMAKE_SOURCE_DIR}/libraries/windows)
     SET(LIBRARY_EXTENSION "lib")
-ELSEIF(APPLE)
-    SET(PLATFORM_PATHS ${CMAKE_SOURCE_DIR}/libraries/macos)
-    SET(LIBRARY_EXTENSION "dylib")
 ELSEIF(UNIX)
     SET(PLATFORM_PATHS ${CMAKE_SOURCE_DIR}/libraries/linux)
     SET(LIBRARY_EXTENSION "so")
@@ -64,29 +77,20 @@ set(OPENVR_LIB)
 IF (USE_OPENVR)
 	find_package(OpenVR REQUIRED)
 	include_directories(${OPENVR_INCLUDE_DIR})
-	IF(UNIX)
 		add_definitions(-DSRE_OPENVR)
-	ELSE(UNIX)	
-		add_definitions(/DSRE_OPENVR)
-	ENDIF(UNIX)
 	
     set(OPENVR_LIB ${OPENVR_LIBRARY})
+    list(APPEND EXTRA_LIBS ${OPENVR_LIBRARY})
 ENDIF(USE_OPENVR)
 
+add_definitions(-DSRE_EXPORT)
 
 set(DLLFileList)
 IF (WIN32)
     SET(SDL2_DLL_FOLDER "${PLATFORM_PATHS}/SDL2/lib/${PLATFORM_ARCH}")
 
-    #set visual studio to MT
-   foreach(flag_var
-        CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
-        CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
-      if(${flag_var} MATCHES "/MD")
-        string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
-      endif(${flag_var} MATCHES "/MD")
-    endforeach(flag_var)
-
+    set(CMAKE_CXX_FLAGS_RELEASE "/MD")
+    set(CMAKE_CXX_FLAGS_DEBUG "/MDd")
  
     file(GLOB DLLFileList
         "${SDL2_DLL_FOLDER}/*.dll"
@@ -98,6 +102,6 @@ ENDIF(WIN32)
 
 
 add_subdirectory(src)
-add_subdirectory(examples)
-add_subdirectory(test)
-add_subdirectory(utils)
+#add_subdirectory(examples)
+#add_subdirectory(test)
+#add_subdirectory(utils)

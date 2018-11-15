@@ -20,7 +20,7 @@ public:
         r.init();
 
         camera.lookAt({0,0,3},{0,0,0},{0,1,0});
-        camera.setPerspectiveProjection(60,0.1,100);
+        camera.setPerspectiveProjection(60,0.1f,100);
 
         texture = Texture::create().withRGBData(nullptr, 1024,1024).build();
 

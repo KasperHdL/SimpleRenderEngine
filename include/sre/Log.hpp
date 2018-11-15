@@ -8,6 +8,7 @@
 
 #include <string>
 #include <functional>
+#include <sre/impl/Export.hpp>
 
 // Logging in SRE is done using the preprocessor macros:
 //
@@ -36,13 +37,13 @@ namespace sre{
 
     class Log {
     public:
-        static void verbose(const char * function,const char * file, int line, const char * format, ...);
-        static void info(const char * function,const char * file, int line, const char * format, ...);
-        static void warning(const char * function,const char * file, int line, const char * format, ...);
-        static void error(const char * function,const char * file, int line, const char * format, ...);
-        static void fatal(const char * function,const char * file, int line, const char * format, ...);
+        static DllExport void verbose(const char * function,const char * file, int line, const char * format, ...);
+        static DllExport void info(const char * function,const char * file, int line, const char * format, ...);
+        static DllExport void warning(const char * function,const char * file, int line, const char * format, ...);
+        static DllExport void error(const char * function,const char * file, int line, const char * format, ...);
+        static DllExport void fatal(const char * function,const char * file, int line, const char * format, ...);
 
-        static std::function<void(const char * function,const char * file, int line, LogType type, std::string msg)> logHandler;
+        static DllExport std::function<void(const char * function,const char * file, int line, LogType type, std::string msg)> logHandler;
     };
 }
 

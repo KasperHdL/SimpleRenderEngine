@@ -11,7 +11,7 @@
 
 namespace sre {
     // Render stats maintained by SimpleRenderEngine
-    struct DllExport RenderStats {
+    struct RenderStats {
         int frame=0;                                          // The frameid the render stat is captured
         int meshCount=0;                                      // Number of allocated meshes
         int meshBytes=0;                                      // Size of allocated meshes in bytes

@@ -35,9 +35,9 @@ class Renderer;
 // The `startEventLoop()` will start the event loop, which polls the event queue in the
 // beginning of each frame (and providing callbacks to `keyEvent` and `mouseEvent`), followed by a `frameUpdate(float)`
 // and a `frameRender()`.
-class DllExport SDLRenderer {
+class  SDLRenderer {
 public:
-    class InitBuilder {
+    class  InitBuilder {
     public:
         ~InitBuilder();
         InitBuilder& withSdlInitFlags(uint32_t sdlInitFlag);            // Set SDL Init flags (See: https://wiki.libsdl.org/SDL_Init )

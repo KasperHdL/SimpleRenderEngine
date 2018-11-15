@@ -29,7 +29,7 @@ namespace sre {
      *
      * The coordinate system used is right-handed with y-pointing upwards.
      */
-    class DllExport Camera {
+    class Camera {
     public:
 
         Camera();                                               // Set camera at (0,0,0) looking down the negative

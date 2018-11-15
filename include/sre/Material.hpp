@@ -29,36 +29,36 @@ namespace sre {
      * surface using lights in the scene) a material would contain a color (glm::vec4), a texture (sre::Texture) and
      * specularity (float). The specularity determines that shininess of the material.
      */
-    class DllExport Material {
+    class Material {
     public:
-        ~Material();
+         ~Material();
 
-        std::shared_ptr<sre::Shader> getShader();
+         std::shared_ptr<sre::Shader> getShader();
 
-        void setShader(std::shared_ptr<sre::Shader> shader);
+         void setShader(std::shared_ptr<sre::Shader> shader);
 
-        const std::string &getName();
+         const std::string &getName();
 
-        void setName(const std::string &name);
+         void setName(const std::string &name);
 
         // uniform parameters
-        Color getColor();
+         Color getColor();
 
-        bool setColor(const Color &color);
+         bool setColor(const Color &color);
 
-        std::shared_ptr<sre::Texture> getTexture();
+         std::shared_ptr<sre::Texture> getTexture();
 
-        bool setTexture(std::shared_ptr<sre::Texture> texture);
+         bool setTexture(std::shared_ptr<sre::Texture> texture);
 
-        Color getSpecularity();
+         Color getSpecularity();
 
-        bool setSpecularity(Color specularity); // {specular intensity (rgb), Specular exponent (a)}.
+         bool setSpecularity(Color specularity); // {specular intensity (rgb), Specular exponent (a)}.
                                                 // Specular intensity should be between 0.0 and 1.0
                                                 // Alpha value stores the specular exponent must be above 0.0. Large values gives smaller highlights
 
 
-        glm::vec2 getMetallicRoughness();       // The metalness of the material. A value of 1.0 means the material is
-        bool setMetallicRoughness(glm::vec2 metallicRoughness);       // a metal. A value of 0.0 means the material is a dielectric. Values in
+         glm::vec2 getMetallicRoughness();       // The metalness of the material. A value of 1.0 means the material is
+         bool setMetallicRoughness(glm::vec2 metallicRoughness);       // a metal. A value of 0.0 means the material is a dielectric. Values in
                                                 // between are for blending between metals and dielectrics such as dirty
                                                 // metallic surfaces. This value is linear. If a metallicRoughnessTexture
                                                 // is specified, this value is multiplied with the metallic texel values.
@@ -69,22 +69,22 @@ namespace sre {
                                                 // this value is multiplied with the roughness texel values.
                                                 // (Source https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#reference-pbrmetallicroughness)
 
-        std::shared_ptr<sre::Texture> getMetallicRoughnessTexture();
-        bool setMetallicRoughnessTexture(std::shared_ptr<sre::Texture> texture);
+         std::shared_ptr<sre::Texture> getMetallicRoughnessTexture();
+         bool setMetallicRoughnessTexture(std::shared_ptr<sre::Texture> texture);
                                                 // The metallic-roughness texture. The metalness values are sampled from
                                                 // the B channel. The roughness values are sampled from the G channel.
                                                 // These values are linear. If other channels are present (R or A), they
                                                 // are ignored for metallic-roughness calculations.
                                                 // (Source https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#reference-pbrmetallicroughness)
 
-        bool set(std::string uniformName, glm::vec4 value);
-        bool set(std::string uniformName, float value);
-        bool set(std::string uniformName, std::shared_ptr<Texture> value);
-        bool set(std::string uniformName, std::shared_ptr<std::vector<glm::mat3>> value);
-        bool set(std::string uniformName, std::shared_ptr<std::vector<glm::mat4>> value);
-        bool set(std::string uniformName, Color value);
+         bool set(std::string uniformName, glm::vec4 value);
+         bool set(std::string uniformName, float value);
+         bool set(std::string uniformName, std::shared_ptr<Texture> value);
+         bool set(std::string uniformName, std::shared_ptr<std::vector<glm::mat3>> value);
+         bool set(std::string uniformName, std::shared_ptr<std::vector<glm::mat4>> value);
+         bool set(std::string uniformName, Color value);
 
-        template<typename T>
+        template<typename T> 
         inline T get(std::string uniformName);
     private:
         void bind();
@@ -101,7 +101,7 @@ namespace sre {
     };
 
     template<>
-    inline std::shared_ptr<sre::Texture> Material::get(std::string uniformName) {
+     inline std::shared_ptr<sre::Texture> Material::get(std::string uniformName) {
         auto t = shader->getUniform(uniformName);
         if (t.type != UniformType::Texture && t.type != UniformType::TextureCube){
             return nullptr;
@@ -116,7 +116,7 @@ namespace sre {
     }
 
     template<>
-    inline glm::vec4 Material::get(std::string uniformName)  {
+     inline glm::vec4 Material::get(std::string uniformName)  {
         auto t = shader->getUniform(uniformName);
         if (t.type == UniformType::Vec4){
             auto res = uniformMap.vectorValues.find(t.id);
@@ -128,7 +128,7 @@ namespace sre {
     }
 
     template<>
-    inline Color Material::get(std::string uniformName)  {
+     inline Color Material::get(std::string uniformName)  {
         auto t = shader->getUniform(uniformName);
         if (t.type == UniformType::Vec4){
             auto res = uniformMap.vectorValues.find(t.id);
@@ -142,7 +142,7 @@ namespace sre {
     }
 
     template<>
-    inline float Material::get(std::string uniformName) {
+     inline float Material::get(std::string uniformName) {
         auto t = shader->getUniform(uniformName);
         if (t.type == UniformType::Float) {
             auto res = uniformMap.floatValues.find(t.id);
@@ -154,7 +154,7 @@ namespace sre {
     }
 
     template<>
-    inline std::shared_ptr<std::vector<glm::mat3>> Material::get(std::string uniformName) {
+     inline std::shared_ptr<std::vector<glm::mat3>> Material::get(std::string uniformName) {
         auto t = shader->getUniform(uniformName);
         if (t.type == UniformType::Mat3) {
             auto res = uniformMap.mat3Values.find(t.id);
@@ -166,7 +166,7 @@ namespace sre {
     }
 
     template<>
-    inline std::shared_ptr<std::vector<glm::mat4>> Material::get(std::string uniformName) {
+     inline std::shared_ptr<std::vector<glm::mat4>> Material::get(std::string uniformName) {
         auto t = shader->getUniform(uniformName);
         if (t.type == UniformType::Mat4) {
             auto res = uniformMap.mat4Values.find(t.id);

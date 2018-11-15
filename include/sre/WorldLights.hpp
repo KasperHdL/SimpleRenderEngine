@@ -13,7 +13,7 @@
 #include "sre/impl/Export.hpp"
 
 namespace sre {
-    class DllExport WorldLights {
+    class WorldLights {
     public:
         WorldLights();                                      // Create world light
         int addLight(const Light & light);                  // Add light

@@ -10,6 +10,7 @@
 #include "sre/Sprite.hpp"
 #include "Mesh.hpp"
 #include "Log.hpp"
+#include <sre/impl/Export.hpp>
 
 /// Sprite batch batches multiple sprites into few draw calls. It is possible to reuse SpriteBatches over multiple
 /// frames when the sprites are not changed (e.g. for rendering static level or background geometry).
@@ -38,7 +39,7 @@ public:
         friend class SpriteBatch;
     };
 
-    static SpriteBatchBuilder create();
+    static DllExport SpriteBatchBuilder create();
 
 private:
     SpriteBatch(std::shared_ptr<Shader> shader, std::vector<Sprite>& sprites);
