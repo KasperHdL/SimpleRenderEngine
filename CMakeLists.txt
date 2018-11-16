@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.5)
 project(SimpleRenderEngine CXX)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+list(APPEND CMAKE_CXX_FLAGS "-std=c++14")
 
-set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
@@ -89,8 +89,8 @@ set(DLLFileList)
 IF (WIN32)
     SET(SDL2_DLL_FOLDER "${PLATFORM_PATHS}/SDL2/lib/${PLATFORM_ARCH}")
 
-    set(CMAKE_CXX_FLAGS_RELEASE "/MD")
-    set(CMAKE_CXX_FLAGS_DEBUG "/MDd")
+    list(APPEND CMAKE_CXX_FLAGS_RELEASE "/MD")
+    list(APPEND CMAKE_CXX_FLAGS_DEBUG "/MDd")
  
     file(GLOB DLLFileList
         "${SDL2_DLL_FOLDER}/*.dll"
